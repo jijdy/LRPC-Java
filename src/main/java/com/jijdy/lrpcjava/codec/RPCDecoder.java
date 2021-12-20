@@ -41,6 +41,7 @@ public class RPCDecoder extends ByteToMessageDecoder {
         } catch (Exception e) {
             throw new RPCException(RPCErrorEnum.DESERIALIZE_FAILED,e);
         } finally {
+            /* 清除缓冲区，防止内存泄漏 */
           byteBuf.clear();
         }
     }

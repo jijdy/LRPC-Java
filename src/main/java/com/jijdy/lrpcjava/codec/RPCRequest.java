@@ -1,6 +1,7 @@
 package com.jijdy.lrpcjava.codec;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /* 请求对象的封装，需要携带有，请求接口名称，请求方法，请求参数的类型和具体参数
    使用建造者模式完成该类的创建
@@ -138,4 +139,15 @@ public class RPCRequest implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        return "RPCRequest{" +
+                "requestId='" + requestId + '\'' +
+                ", interfaceName='" + interfaceName + '\'' +
+                ", methodName='" + methodName + '\'' +
+                ", parameterTypes=" + Arrays.toString(parameterTypes) +
+                ", parameters=" + Arrays.toString(parameters) +
+                ", version='" + version + '\'' +
+                '}';
+    }
 }

@@ -16,8 +16,9 @@ import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 /* client based on Netty
@@ -27,7 +28,25 @@ import java.util.concurrent.TimeUnit;
 public class NettyClient {
     private static final Logger log = LoggerFactory.getLogger(NettyClient.class);
 
+    /* 根据IP地址来保存channel连接的map集合 */
+    private static final Map<String, Channel> channelMap = new ConcurrentHashMap<>();
+
     private final Serializer serializer = new ProtostuffSerializer();
+
+
+    public Channel getChannel(String address) throws InterruptedException {
+        if (channelMap.containsKey(address)) {
+            return channelMap.get(address);
+        }
+        /* 创建连接并缓存， */
+        int index = address.indexOf(":");
+        String host = address.substring(0,index);
+        int post = Integer.parseInt(address.substring(index+1));
+
+        Channel connection = connection(new InetSocketAddress(host, post));
+        channelMap.put(address,connection);
+        return connection;
+    }
 
     public Channel connection(InetSocketAddress address) throws InterruptedException {
         String hostAddress = address.getAddress().getHostAddress();

@@ -8,6 +8,8 @@ public enum RPCErrorEnum {
     SERIALIZE_FAILED("序列化失败!"),
     DESERIALIZE_FAILED("反序列化失败!"),
     SERVICE_NOT_FOUND("未找到指定服务!"),
+    REGISTER_FAILED("注册失败!"),
+    SERVICE_NOT_REGISTER("服务未注册!"),
     ;
 
     private final String message;

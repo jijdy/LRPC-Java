@@ -12,7 +12,12 @@ import lombok.SneakyThrows;
 
 import java.net.InetSocketAddress;
 
+/* server run test
+ * @Author jijdy
+ * @Date 2021/12/20 12:50
+ */
 public class ServerTest {
+
     public static void main(String[] args) {
         new Thread(new Runnable() {
             @Override
@@ -27,7 +32,6 @@ public class ServerTest {
                 System.out.println("server start!");
             }
         }).start();
-
 
 
         new Thread(new Runnable() {

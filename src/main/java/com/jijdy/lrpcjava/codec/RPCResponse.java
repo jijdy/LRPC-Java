@@ -8,7 +8,6 @@ import java.io.Serializable;
  * @Author jijdy
  * @Date 2021/12/18 16:31
  */
-@ToString
 public class RPCResponse implements Serializable {
     public static final long serialVersionUID = 1823821843821L;
 
@@ -48,5 +47,14 @@ public class RPCResponse implements Serializable {
 
     public Object getMessage() {
         return message;
+    }
+
+    @Override
+    public String toString() {
+        return "RPCResponse{" +
+                "requestId='" + requestId + '\'' +
+                ", error='" + error + '\'' +
+                ", message=" + message +
+                '}';
     }
 }
