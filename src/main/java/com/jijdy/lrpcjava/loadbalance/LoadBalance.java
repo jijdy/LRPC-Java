@@ -6,12 +6,10 @@ package com.jijdy.lrpcjava.loadbalance;
  */
 public abstract class LoadBalance {
 
-    /* 下标从1开始 */
-    public String findService(byte[] data) {
-        String s = new String(data);
-        String[] split = s.split("/");
-        if (split.length == 2) {
-            return split[1];
+    /* 下标从1开始，若只有一个提供者，则不做负载均衡，直接返回地址 */
+    public String findService(String[] split) {
+        if (split.length == 1) {
+            return split[0];
         }
         return this.route(split);
     }

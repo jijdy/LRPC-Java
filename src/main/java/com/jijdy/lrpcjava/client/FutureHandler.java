@@ -54,11 +54,21 @@ public class FutureHandler {
         return futureHandler;
     }
 
+    /* 完成远程调用的主要逻辑，并返回响应的数据 */
     public Object remoteInvoke(RPCRequest request) throws Exception {
         String serviceName = request.getInterfaceName() + request.getVersion();
 
-        /* 从注册中心通过负载均衡算法得到ip地址，并通过client来获得连接 */
-        String address = discovery.getAddress(serviceName);
+
+        String address ;
+
+        /* 若有指定ip地址，则直接通过该ip来进行连接，否者在注册中心进行查找 */
+        if (null != request.getAddr()) {
+            address = request.getAddr();
+        } else {
+            /* 从注册中心通过负载均衡算法得到ip地址，并通过client来获得连接 */
+            address= discovery.getAddress(serviceName);
+        }
+
         Channel channel = client.getChannel(address);
 
         /* 添加future，得到响应时的数据 */
@@ -76,13 +86,12 @@ public class FutureHandler {
         });
         /* 此时future已经得到了数据，并将其置为了完成状态 */
         RPCResponse rpcResponse = future.get();
-        futureMap.remove(rpcResponse.getRequestId());
         return rpcResponse.getMessage();
     }
 
     public void complete(RPCResponse response) {
         String requestId = response.getRequestId();
-        CompletableFuture<RPCResponse> future = getFuture(requestId);
+        CompletableFuture<RPCResponse> future = futureMap.remove(requestId);
         if (future.complete(response)) {
             log.info("receive server response:[{}]",response);
         }

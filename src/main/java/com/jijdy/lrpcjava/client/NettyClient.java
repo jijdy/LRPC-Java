@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-/* client based on Netty
+/* client based on Netty，only provide channel for service
  * @Author jijdy
  * @Date 2021/12/19 18:48
  */

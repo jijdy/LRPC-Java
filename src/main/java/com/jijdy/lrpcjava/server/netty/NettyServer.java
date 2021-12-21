@@ -15,14 +15,10 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
-import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.BindException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.security.spec.ECField;
 import java.util.concurrent.TimeUnit;
 
 /* server based on Netty */
@@ -30,17 +26,15 @@ public class NettyServer implements Server {
 
     private static final Logger log = LoggerFactory.getLogger(NettyServer.class);
 
-    private static ServerBootstrap bootstrap;
 
     /* todo 使用多线程的方式来创建服务器，来保证有多个连接能够被创建 */
-    @SneakyThrows
     @Override
     public void start() {
         EventLoopGroup boosGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
 
-            bootstrap = new ServerBootstrap();
+            ServerBootstrap bootstrap = new ServerBootstrap();
 
             bootstrap.group(boosGroup, workerGroup).channel(NioServerSocketChannel.class)
                     /* nodelay算法，用于尽可能的发送大数据块，减少网络传输次数 */
@@ -74,10 +68,20 @@ public class NettyServer implements Server {
             String host = InetAddress.getLocalHost().getHostAddress();
             /* 从配置中获取port，默认为13578 */
             int port = ConfigService.getPort();
-            ChannelFuture future;
-            /*todo 若bind失败，尝试换端口连接，尝试两次 */
 
-            future = bootstrap.bind(host, port).sync();
+            ChannelFuture future;
+            if (ConfigService.hasPort()) {
+                future = bootstrap.bind(host, port).sync();
+            } else {
+                /* 若bind失败，尝试换端口连接，尝试1次 */
+                try {
+                    future = bootstrap.bind(host, port).sync();
+                } catch (Exception e) {
+                    log.info("port: [{}] has be bind, try bind another port.",port);
+                    port++;
+                    future = bootstrap.bind(host ,port).sync();
+                }
+            }
 
             log.info("server start on port: {}", port);
             future.channel().closeFuture().sync();
@@ -88,10 +92,5 @@ public class NettyServer implements Server {
             boosGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
-    }
-
-    @Override
-    public void close() {
-
     }
 }

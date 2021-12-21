@@ -16,6 +16,11 @@ public class ConfigService {
 
     private static Integer port;
 
+    public static boolean hasPort() {
+        return null != port;
+    }
+
+
     public static int getPort() {
         if (null == port) {
             return 13578;

@@ -23,15 +23,18 @@ public class RPCRequest implements Serializable {
 
     private String version;
 
+    private String addr;
+
     public RPCRequest(){}
 
-    public RPCRequest(String requestId, String interfaceName, String methodName, Class<?>[] parameterTypes, Object[] parameters, String version) {
+    public RPCRequest(String requestId, String interfaceName, String methodName, Class<?>[] parameterTypes, Object[] parameters, String version,String addr) {
         this.requestId = requestId;
         this.interfaceName = interfaceName;
         this.methodName = methodName;
         this.parameterTypes = parameterTypes;
         this.parameters = parameters;
         this.version = version;
+        this.addr = addr;
     }
 
     public String getRequestId() {
@@ -59,6 +62,10 @@ public class RPCRequest implements Serializable {
             return "";
         }
         return version;
+    }
+
+    public String getAddr() {
+        return addr;
     }
 
     public void setRequestId(String requestId) {
@@ -104,6 +111,8 @@ public class RPCRequest implements Serializable {
 
         private String version;
 
+        private String addr;
+
         public RPCRequestBuilder requestId(String id) {
             this.requestId = id;
             return this;
@@ -134,8 +143,13 @@ public class RPCRequest implements Serializable {
             return this;
         }
 
+        public RPCRequestBuilder addr(String addr) {
+            this.addr = addr;
+            return this;
+        }
+
         public RPCRequest build() {
-            return new RPCRequest(this.requestId,this.interfaceName,this.methodName,this.parameterTypes,this.parameters,this.version);
+            return new RPCRequest(this.requestId,this.interfaceName,this.methodName,this.parameterTypes,this.parameters,this.version,this.addr);
         }
     }
 

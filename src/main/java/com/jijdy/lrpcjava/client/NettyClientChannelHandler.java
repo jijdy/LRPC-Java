@@ -7,7 +7,7 @@ import io.netty.util.concurrent.CompleteFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/* client channelHandler
+/* client channelHandler，receive and handler response
  * @Author jijdy
  * @Date 2021/12/19 22:27
  */
@@ -19,6 +19,7 @@ public class NettyClientChannelHandler extends SimpleChannelInboundHandler<RPCRe
     public NettyClientChannelHandler() {
         futureHandler = FutureHandler.getFutureHandler();
     }
+
 
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RPCResponse rpcResponse) throws Exception {

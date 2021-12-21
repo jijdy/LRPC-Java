@@ -5,6 +5,7 @@ import com.jijdy.lrpcjava.exception.RPCException;
 import com.jijdy.lrpcjava.exception.enums.RPCErrorEnum;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /* get service object based on interfaceName and version,
@@ -45,6 +46,14 @@ public class ServiceProvider {
         } else {
             throw new RPCException(RPCErrorEnum.SERVICE_NOT_FOUND);
         }
+    }
+
+    public Set<String> getServiceNameSet() {
+        return this.serviceMap.keySet();
+    }
+
+    public boolean emptyService() {
+        return serviceMap.isEmpty();
     }
 
 }

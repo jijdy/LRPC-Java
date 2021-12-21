@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 public class ClientTest {
 
+    /* 该测试用例需要保证本机开启了默认端口的ZooKeeper */
     @Test
     public void proxyTest() throws Exception {
         UserInfo proxy = (UserInfo) new ClientProxy().getProxy(UserInfo.class);
@@ -22,8 +23,7 @@ public class ClientTest {
 
         /* 先将服务注册到注册中心，和服务器中的具体对象映射中 */
         ServiceRegistry serviceRegistry = new ServiceRegistry();
-        serviceRegistry.registerService(UserInfo.class.getName());
-        serviceRegistry.registerServiceImpl(UserInfo.class.getName(),new UserInfoImp());
+        serviceRegistry.registerService(UserInfo.class.getName(),new UserInfoImp());
         /* 由本地客户端，进行代理调用，通过ZK来查找服务 */
         System.out.println(proxy.getInfo());
     }

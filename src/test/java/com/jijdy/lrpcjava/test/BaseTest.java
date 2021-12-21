@@ -1,6 +1,10 @@
 package com.jijdy.lrpcjava.test;
 
 import com.google.common.primitives.Bytes;
+import com.jijdy.lrpcjava.utils.CuratorUtil;
+import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
+import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetAddress;
@@ -9,6 +13,17 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 
 public class BaseTest {
+
+    @Test
+    public void lockTest() throws Exception {
+        CuratorFramework curator = CuratorUtil.getCuratorFramework();
+        String lockPath = "/config/lock/"+"serviceName";
+        InterProcessReadWriteLock interProcessReadWriteLock = new InterProcessReadWriteLock(curator, lockPath);
+        InterProcessMutex interProcessMutex = interProcessReadWriteLock.writeLock();
+        interProcessMutex.acquire();
+        Thread.sleep(10000);
+        interProcessMutex.release();
+    }
 
     @Test
     public void test1() throws UnknownHostException {
@@ -30,5 +45,14 @@ public class BaseTest {
         System.out.println(substring);
         String x1 = new String(bytes);
         assert x1.equals(x);
+    }
+
+    @Test
+    public void test2() {
+        String s = "/234324/234315";
+        String s1 = "/23431";
+        int i = s.indexOf(s1);
+        s = s.substring(0,i)+s.substring(i+s1.length());
+        System.out.println(s);
     }
 }
