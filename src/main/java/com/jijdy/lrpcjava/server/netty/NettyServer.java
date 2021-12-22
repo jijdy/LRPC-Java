@@ -15,6 +15,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +31,13 @@ public class NettyServer implements Server {
     /* todo 使用多线程的方式来创建服务器，来保证有多个连接能够被创建 */
     @Override
     public void start() {
+        log.info("server begin start! ");
         EventLoopGroup boosGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
+
+        /* 设置一个默认的多线程执行器，用于获取线程来同步执行任务 */
+        DefaultEventExecutorGroup eventExecutors = new DefaultEventExecutorGroup(Runtime.getRuntime().availableProcessors());
+
         try {
 
             ServerBootstrap bootstrap = new ServerBootstrap();
@@ -60,8 +66,8 @@ public class NettyServer implements Server {
                                     .addLast(new RPCDecoder(serializer, RPCRequest.class));
                             /* 空闲超时触发器的空闲时间设置,一分钟没有收到消息，就会将该和客户端的连接关闭 */
                             pipeline.addLast(new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
-                            /* ChannelHandler，业务处理方式 */
-                            pipeline.addLast(new NettyServerChannelHandler());
+                            /* 传入多线程执行器，用于多线程同步执行任务 ChannelHandler，业务处理方式 */
+                            pipeline.addLast(eventExecutors,new NettyServerChannelHandler());
                         }
                     });
 
@@ -83,7 +89,7 @@ public class NettyServer implements Server {
                 }
             }
 
-            log.info("server start on port: {}", port);
+            log.info("server start successful and  on port: {}", port);
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             log.info("server start failed!");

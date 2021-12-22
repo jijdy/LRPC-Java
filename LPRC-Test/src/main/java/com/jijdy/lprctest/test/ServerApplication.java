@@ -1,4 +1,4 @@
-package com.jijdy.lrpcjava.integration;
+package com.jijdy.lprctest.test;
 
 import com.jijdy.lrpcjava.annotation.LRPCService;
 import com.jijdy.lrpcjava.server.Server;
@@ -9,9 +9,11 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+@Component
 public class ServerApplication implements ApplicationContextAware, InitializingBean, DisposableBean {
 
     private final Server server = new NettyServer();
@@ -24,6 +26,7 @@ public class ServerApplication implements ApplicationContextAware, InitializingB
     public void destroy() throws Exception {
         /* 注销所有注册中心的数据 */
         registry.unRegisterService();
+        registry.registryClose();
     }
 
     /* bean的初始化，在beanDefinition完成初始化之后，bean进入到ioc容器之前，进行一个初始化操作*/

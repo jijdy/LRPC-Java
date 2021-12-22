@@ -15,7 +15,6 @@ public abstract class LoadBalance {
     }
 
 
-
     /* 负载均衡得到需要被连接的地址 */
     public abstract String route(String[] routes);
 }

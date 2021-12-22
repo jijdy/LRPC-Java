@@ -30,6 +30,10 @@ public class NettyServerChannelHandler extends SimpleChannelInboundHandler<RPCRe
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, RPCRequest rpcRequest) throws Exception {
 
+        if (rpcRequest.getRequestId().equals("heart-beat:ping")) {
+            log.info("receive client ping! addr:[{}]",channelHandlerContext.channel().remoteAddress());
+            return;
+        }
         RPCResponse response = new RPCResponse(rpcRequest.getRequestId());
         Throwable throwable = null;
         Object invoke = null;

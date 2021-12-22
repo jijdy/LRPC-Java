@@ -130,4 +130,9 @@ public class CuratorUtil {
         }
         return bytes;
     }
+
+    public static void close(CuratorFramework curator) {
+        curator.close();
+    }
+
 }

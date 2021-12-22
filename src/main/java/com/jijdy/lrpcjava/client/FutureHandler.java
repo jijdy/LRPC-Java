@@ -5,6 +5,8 @@ import com.jijdy.lrpcjava.codec.RPCResponse;
 import com.jijdy.lrpcjava.service.discovery.ServiceDiscovery;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.util.internal.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,17 +60,18 @@ public class FutureHandler {
     public Object remoteInvoke(RPCRequest request) throws Exception {
         String serviceName = request.getInterfaceName() + request.getVersion();
 
-
+        log.info("调用服务：[{}]",serviceName);
         String address ;
 
         /* 若有指定ip地址，则直接通过该ip来进行连接，否者在注册中心进行查找 */
-        if (null != request.getAddr()) {
+        if (StringUtils.isNotBlank(request.getAddr())) {
             address = request.getAddr();
         } else {
             /* 从注册中心通过负载均衡算法得到ip地址，并通过client来获得连接 */
             address= discovery.getAddress(serviceName);
         }
-
+        log.info("得到ip地址：[{}]",address);
+        /* 拿到指定地址的channel对象用于传输数据， */
         Channel channel = client.getChannel(address);
 
         /* 添加future，得到响应时的数据 */

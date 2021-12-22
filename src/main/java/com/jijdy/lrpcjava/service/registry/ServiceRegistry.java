@@ -41,12 +41,12 @@ public class ServiceRegistry {
         CuratorUtil.registerService(curator,serviceName,data);
         /* 将注册的服务保存在服务端本地的缓存中 */
         provider.addServiceMap(serviceName,serviceImpl);
-        log.info("添加服务成功: [{}]",serviceName);
+        log.info("添加服务成功: [{}],[{}]",serviceName,serviceImpl);
     }
 
 
-
     public void unRegisterService() {
+        log.info("unRegister all service for registry!");
         Set<String> serviceNameSet = provider.getServiceNameSet();
         try {
             for (String s : serviceNameSet) {
@@ -58,7 +58,13 @@ public class ServiceRegistry {
     }
 
     public boolean isStart() {
-        return provider.emptyService();
+        return !provider.emptyService();
     }
+
+    public void registryClose() {
+        log.info("close curator before jvm destroy！");
+        curator.close();
+    }
+
 
 }

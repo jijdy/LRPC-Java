@@ -1,5 +1,7 @@
 package com.jijdy.lrpcjava.codec;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -65,6 +67,9 @@ public class RPCRequest implements Serializable {
     }
 
     public String getAddr() {
+        if (StringUtils.isBlank(addr)) {
+            return null;
+        }
         return addr;
     }
 

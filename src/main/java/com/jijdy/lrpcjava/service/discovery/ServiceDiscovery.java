@@ -45,6 +45,7 @@ public class ServiceDiscovery {
             log.info("get service[{}] data: [{}]",serviceName,serviceData);
             String s = new String(serviceData);
             String[] split = s.substring(1).split("/");
+//            log.info("得到的所有服务地址为：{}", Arrays.toString(split));
             addresses = loadBalance.findService(split);
             /* 存入缓存中，以便之后进行查找，但是只会缓存上一次成功的服务 */
             serviceCacheMap.put(serviceName,split);
@@ -59,7 +60,7 @@ public class ServiceDiscovery {
             }
         }
 
-        if (addresses == null) throw new RPCException(RPCErrorEnum.SERVICE_NOT_FOUND);
+        if (addresses == null || "".equals(addresses)) throw new RPCException(RPCErrorEnum.SERVICE_NOT_FOUND);
         return addresses;
     }
 }
