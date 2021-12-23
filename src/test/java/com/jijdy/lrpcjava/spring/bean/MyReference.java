@@ -1,4 +1,4 @@
-package com.jijdy.lprctest.spring.bean;
+package com.jijdy.lrpcjava.spring.bean;
 
 import com.jijdy.lrpcjava.annotation.LRPCReference;
 import com.jijdy.lrpcjava.test.Service;

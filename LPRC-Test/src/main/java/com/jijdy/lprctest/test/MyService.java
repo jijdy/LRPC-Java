@@ -1,7 +1,7 @@
 package com.jijdy.lprctest.test;
 
-import com.jijdy.lprctest.test.Service;
 import com.jijdy.lrpcjava.annotation.LRPCService;
+import com.jijdy.lrpcjava.test.Service;
 import org.springframework.stereotype.Component;
 
 @Component

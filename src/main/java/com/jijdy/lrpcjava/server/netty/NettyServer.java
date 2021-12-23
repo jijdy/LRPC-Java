@@ -65,7 +65,7 @@ public class NettyServer implements Server {
                             pipeline.addLast(new RPCEncoder(serializer))
                                     .addLast(new RPCDecoder(serializer, RPCRequest.class));
                             /* 空闲超时触发器的空闲时间设置,一分钟没有收到消息，就会将该和客户端的连接关闭 */
-                            pipeline.addLast(new IdleStateHandler(0, 0, 60, TimeUnit.SECONDS));
+                            pipeline.addLast(new IdleStateHandler(0, 0, 90, TimeUnit.SECONDS));
                             /* 传入多线程执行器，用于多线程同步执行任务 ChannelHandler，业务处理方式 */
                             pipeline.addLast(eventExecutors,new NettyServerChannelHandler());
                         }

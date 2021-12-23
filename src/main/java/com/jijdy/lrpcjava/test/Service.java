@@ -1,4 +1,4 @@
-package com.jijdy.lprctest.test;
+package com.jijdy.lrpcjava.test;
 
 public interface Service {
 

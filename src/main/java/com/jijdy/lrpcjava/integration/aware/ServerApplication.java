@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Component
+//@Component
 public class ServerApplication implements ApplicationContextAware, InitializingBean, DisposableBean {
 
     private final Server server = new NettyServer();

@@ -3,7 +3,6 @@ package com.jijdy.lprctest.spring;
 import com.jijdy.lprctest.spring.bean.MyReference;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
@@ -19,6 +18,9 @@ public class SpringTest {
         String name = "jijdy";
 
          service.invoke();
+         while (true) {
+
+         }
 
     }
 }

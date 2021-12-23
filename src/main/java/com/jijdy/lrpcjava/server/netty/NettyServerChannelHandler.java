@@ -60,6 +60,7 @@ public class NettyServerChannelHandler extends SimpleChannelInboundHandler<RPCRe
 
     /* 根据请求来完成本地服务的调用 */
     private Object invoke(RPCRequest request) throws Throwable {
+        log.info("得到client的request：{}",request);
         String serviceName = request.getInterfaceName() + request.getVersion();
         Object service = serviceProvider.getService(serviceName);
         Class<?>[] parameterTypes = request.getParameterTypes();

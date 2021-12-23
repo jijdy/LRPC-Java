@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 
-@Component
+//@Component
 public class ClientApplication implements ApplicationContextAware, DisposableBean {
 
     private static final Logger log = LoggerFactory.getLogger(ClientApplication.class);
